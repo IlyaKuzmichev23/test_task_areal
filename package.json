@@ -1,0 +1,20 @@
+{
+  "name": "test_task_areal",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/IlyaKuzmichev23/test_task_areal#readme",
+  "bugs": {
+    "url": "https://github.com/IlyaKuzmichev23/test_task_areal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IlyaKuzmichev23/test_task_areal.git"
+  },
+  "license": "ISC",
+  "author": "Ilya",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
