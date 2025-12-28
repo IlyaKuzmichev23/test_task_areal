@@ -10,7 +10,8 @@ const Article = sequelize.define(
         id:{
             type:DataTypes.INTEGER,
             primaryKey: true,
-            autoincrement: true,
+            autoIncrement: true,
+            allowNull: false
         },
         title:{
             type: DataTypes.STRING,
@@ -28,5 +29,3 @@ const Article = sequelize.define(
 );
 
 module.exports = Article;
-
-

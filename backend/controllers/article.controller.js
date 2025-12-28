@@ -4,9 +4,11 @@ class ArticleController{
 
     //Create
     async create(req,res){
+
+        console.log(req.body);
         try{
-            const {title, text} = req.body;
-            const article = await Article.create({title, text});
+            const {title, content} = req.body;
+            const article = await Article.create({title, content});
             return res.status(201).json(article)
         }
         catch (error){
@@ -31,15 +33,15 @@ class ArticleController{
     }
 
     //Update
-    async update(res,req){
+    async update(req,res){
         const {id} = req.params;
-        const {title, text} = req.body;
+        const {title, content} = req.body;
         const article = await Article.findByPk(id);
         if(!article){
             return res.status(404).json({message: "Article not found"});
         }
         article.title = title ?? article.title;
-        article.text = text ?? article.text;
+        article.content = content ?? article.content;
         await article.save();
 
         return res.json(article);
