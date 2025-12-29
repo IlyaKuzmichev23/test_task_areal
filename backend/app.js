@@ -1,9 +1,11 @@
 const express = require('express');
 const articleRoutes = require("./routes/articles.routes");
+const commentRoutes = require("./routes/comments.routes")
 
 const app = express();
 
 app.use(express.json());
-app.use(articleRoutes);     
+app.use(articleRoutes);
+app.use(commentRoutes); 
 
 module.exports = app;

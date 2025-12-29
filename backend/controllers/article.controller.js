@@ -5,7 +5,6 @@ class ArticleController{
     //Create
     async create(req,res){
 
-        console.log(req.body);
         try{
             const {title, content} = req.body;
             const article = await Article.create({title, content});
@@ -23,7 +22,7 @@ class ArticleController{
     }
 
     //Get by Id
-    async geOne(req, res){
+    async getOne(req, res){
         const {id} = req.params;       
         const article = await Article.findByPk(id);     
         if (!article){
