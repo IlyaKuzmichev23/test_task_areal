@@ -27,3 +27,14 @@ const Comment = sequelize.define(
 );
 
 module.exports = Comment;
+
+const Article = require('./Article'); 
+
+Article.hasMany(Comment, {
+    foreignKey: 'articleId',
+    onDelete: 'CASCADE'
+});
+
+Comment.belongsTo(Article, {
+    foreignKey: 'articleId'
+});
