@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/article/:id/edit',
       name: 'article-edit',
       component: () => import('../views/ArticleForm.vue')
+    },
+    {
+      path: '/article/:id/comments',
+      name: 'article-comments',
+      component: () => import('../views/ArticleComments.vue')
     }
   ],
 })
