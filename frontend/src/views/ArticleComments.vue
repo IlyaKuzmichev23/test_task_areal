@@ -26,6 +26,21 @@
             </v-btn>
             <v-btn @click="cancelEdit">Отмена</v-btn>
         </div>
+
+        <div class="mt-8 pa-4 border">
+            <h3>Добавить новый комментарий</h3>
+
+            <v-textarea
+                 v-model="newCommentText"
+                label="Ваш комментарий"
+                rows="3"
+                class="mt-4"
+            ></v-textarea>
+
+            <v-btn color="primary" @click="addComment" class="mt-2">
+                Отправить комментарий
+            </v-btn>
+        </div>
     </div>
 </template>
 
@@ -38,7 +53,8 @@ export default {
             comments: [],       
             articleId: null,       
             editingComment: null, 
-            editText: ''            
+            editText: '',
+            newCommentText: ''          
         }
     },
 
@@ -90,6 +106,27 @@ export default {
             } 
             catch (error) {
                 alert('Ошибка при сохранении')
+            }
+        }
+
+        async addComment() {
+            if (this.newCommentText.trim()===''){
+                alert ('Напишите текст комментария')
+                return
+            }
+
+            const data = {
+                text: this.newCommentText.trim()
+            }
+
+            try{
+                await axios.post(`http://localhost:3000/article/${this.articleId}/comment/`, data)
+                alert ('Комментарий добавлен!')
+                this.newCommentText = ''
+                this.loadComments()
+            }
+            catch (error){
+                alert('Ошибка при добавлении комментария')
             }
         }
     }
