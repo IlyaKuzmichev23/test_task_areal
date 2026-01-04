@@ -35,9 +35,14 @@ const router = createRouter({
       component: () => import('../views/ArticleComments.vue')
     },
     {
-    path: '/article/:id',
-    name: 'article-view',
-    component: () => import('../views/ArticleView.vue')
+      path: '/article/:id',
+      name: 'article-view',
+      component: () => import('../views/ArticleView.vue')
+    },
+    {
+      path: '/analytic',
+      name: 'analytic',
+      component: () => import('../views/AnalyticComments.vue')
     }
   ],
 })
