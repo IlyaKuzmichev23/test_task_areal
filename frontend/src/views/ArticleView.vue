@@ -54,13 +54,10 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data() {
     return {
       article: null,
-      comments: [],
       articleId: null,
       loading: true,
       editingComment: null,
@@ -75,25 +72,21 @@ export default {
     this.loadComments()
   },
 
+  computed: {
+    comments() {
+      return this.$store.state.comments.list
+    }
+  },
+
   methods: {
     async loadArticle() {
-      try {
-        const response = await axios.get(`http://localhost:3000/article/${this.articleId}`)
-        this.article = response.data
-      } catch (error) {
-        this.article = null
-      } finally {
-        this.loading = false
-      }
+      const article = await this.$store.dispatch('articles/loadSingleArticle', this.articleId)
+      this.article = article
+      this.loading = false
     },
 
     async loadComments() {
-      try {
-        const response = await axios.get(`http://localhost:3000/article/${this.articleId}/comments/`)
-        this.comments = response.data
-      } catch (error) {
-        this.comments = []
-      }
+      await this.$store.dispatch('comments/loadComments', this.articleId)
     },
 
     editArticle() {
@@ -101,14 +94,9 @@ export default {
     },
 
     async deleteArticle() {
-      if (confirm('Точно удалить статью? Все комментарии тоже удалятся')) {
-        try {
-          await axios.delete(`http://localhost:3000/article/${this.articleId}`)
-          alert('Статья удалена')
-          this.$router.push('/articles')
-        } catch (error) {
-          alert('Ошибка при удалении')
-        }
+      if (confirm('Точно удалить?')) {
+        await this.$store.dispatch('articles/deleteArticle', this.articleId)
+        this.$router.push('/articles')
       }
     },
 
@@ -123,45 +111,29 @@ export default {
     },
 
     async saveEdit() {
-      try {
-        await axios.patch(`http://localhost:3000/article/${this.articleId}/comment/${this.editingComment.id}`, {
-          text: this.editText
-        })
-        alert('Комментарий обновлён')
-        this.cancelEdit()
-        this.loadComments()
-      } catch (error) {
-        alert('Ошибка')
-      }
+      await this.$store.dispatch('comments/updateComment', {
+        articleId: this.articleId,
+        comment: { id: this.editingComment.id, text: this.editText }
+      })
+      this.cancelEdit()
     },
 
     async addComment() {
-      if (this.newCommentText.trim() === '') {
-        alert('Напишите текст')
-        return
-      }
+      if (this.newCommentText.trim() === '') return
 
-      try {
-        await axios.post(`http://localhost:3000/article/${this.articleId}/comment/`, {
-          text: this.newCommentText.trim()
-        })
-        alert('Комментарий добавлен')
-        this.newCommentText = ''
-        this.loadComments()
-      } catch (error) {
-        alert('Ошибка')
-      }
+      await this.$store.dispatch('comments/createComment', {
+        articleId: this.articleId,
+        commentData: { text: this.newCommentText.trim() }
+      })
+      this.newCommentText = ''
     },
 
     async deleteComment(commentId) {
-      if (confirm('Точно удалить комментарий?')) {
-        try {
-          await axios.delete(`http://localhost:3000/article/${this.articleId}/comment/${commentId}`)
-          alert('Комментарий удалён')
-          this.loadComments()
-        } catch (error) {
-          alert('Ошибка')
-        }
+      if (confirm('Удалить?')) {
+        await this.$store.dispatch('comments/deleteComment', {
+          articleId: this.articleId,
+          commentId: id
+        })
       }
     }
   }

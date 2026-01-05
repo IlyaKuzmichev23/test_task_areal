@@ -52,12 +52,14 @@ export default {
 
     methods: {
         async loadArticle() {
-            try{
-                const response = await axios.get(`http://localhost:3000/article/${this.articleId}`)
-                this.title = response.data.title
-                this.content = response.data.content
-            }
-            catch (error){
+            try {
+                const response = await this.$store.dispatch('articles/loadArticle', this.articleId)
+                if (response) {
+                    this.title = response.title
+                    this.content = response.content
+                }
+            } 
+            catch (error) {
                 alert('Не удалось загрузить статью')
             }
         },
@@ -75,18 +77,19 @@ export default {
 
             try {
                 if (this.isEdit) {
-                    await axios.patch(`http://localhost:3000/article/${this.articleId}`, data)
+                    data.id = this.articleId
+                    await this.$store.dispatch('articles/updateArticle', data)
                     alert('Статья обновлена')
                 } 
                 else {
-                    await axios.post('http://localhost:3000/article/', data)
+                    await this.$store.dispatch('articles/createArticle', data)
                     alert('Статья добавлена')
                 }
 
                 this.goToList()
             } 
             catch (error) {
-            alert('Ошибка при сохранении')
+                alert('Ошибка при сохранении')
             }
         },
         goToList() {

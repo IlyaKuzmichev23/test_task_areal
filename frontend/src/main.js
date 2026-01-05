@@ -5,18 +5,13 @@ import router from './router'
 import { createStore } from 'vuex'
 import vuetify from './plugins/vuetify'
 
-const store = createStore({
-    state: {
+import articles from './store/modules/articles'
+import comments from './store/modules/comments'
 
-    },
-    mutations: {
-    
-    },
-    actions: {
-    
-    },
-    getters: {
-    
+const store = createStore({
+    modules: {
+        articles,
+        comments
     }
 })
 

@@ -75,18 +75,13 @@ export default {
       }
 
       try {
-        const response = await axios.get('http://localhost:3000/analytic/comments', {
-          params: {
-            dateFrom: from,
-            dateTo: to
-          }
-        })
-
-        this.groupedComments = response.data
+        const data = await this.$store.dispatch('articles/fetchAnalyticComments', { from, to })
+        this.analyticData = data
         this.loaded = true
-      } catch (error) {
-        alert('Ошибка загрузки комментариев')
-        this.groupedComments = []
+      } 
+      catch (error) {
+        alert('Ошибка загрузки')
+        this.analyticData = []
         this.loaded = true
       }
     }

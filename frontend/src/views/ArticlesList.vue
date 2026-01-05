@@ -38,28 +38,20 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
-  data() {
-    return {
-      articles: []
+  
+  created() {
+    this.$store.dispatch('articles/loadArticles')
+  },
+
+  computed: {
+    articles() {
+      return this.$store.state.articles.list
     }
   },
 
-  created() {
-    this.loadArticles()
-  },
-
   methods: {
-    async loadArticles() {
-      try {
-        const response = await axios.get('http://localhost:3000/articles')
-        this.articles = response.data
-      } catch (error) {
-        alert('Не удалось загрузить статьи')
-      }
-    },
 
     goToAdd() {
       this.$router.push('/article/add')
@@ -75,13 +67,7 @@ export default {
 
     async deleteArticle(id) {
       if (confirm('Точно удалить статью?')) {
-        try {
-          await axios.delete(`http://localhost:3000/article/${id}`)
-          alert('Статья удалена')
-          this.loadArticles()  // обновляем список
-        } catch (error) {
-          alert('Ошибка при удалении')
-        }
+        this.$store.dispatch('articles/deleteArticle', id)
       }
     }
   }

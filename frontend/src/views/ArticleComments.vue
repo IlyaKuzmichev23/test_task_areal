@@ -49,8 +49,7 @@ import axios from 'axios'
 
 export default {
     data() {
-        return {
-            comments: [],       
+        return {      
             articleId: null,       
             editingComment: null, 
             editText: '',
@@ -63,27 +62,23 @@ export default {
         this.loadComments()
     },
 
+    computed: {
+        comments() {
+            return this.$store.state.comments.list
+        }
+    },
+
     methods: {
         async loadComments() {
-            try {
-                const response = await axios.get(`http://localhost:3000/article/${this.articleId}/comments/`)
-                this.comments = response.data
-            }
-            catch (error) {
-                alert('Не удалось загрузить комментарии')
-            }
+            await this.$store.dispatch('comments/loadComments', this.articleId)
         },
 
-        async deleteComment(commentId) {
+        async deleteComment(id) {
             if (confirm('Точно удалить комментарий?')) {
-                try {
-                    await axios.delete(`http://localhost:3000/article/${this.articleId}/comment/${commentId}`)
-                    alert('Комментарий удалён')
-                    this.loadComments()  // обновляем список
-                } 
-                catch (error) {
-                    alert('Ошибка при удалении')
-                }
+                await this.$store.dispatch('comments/deleteComment', {
+                articleId: this.articleId,
+                commentId: id
+                })
             }
         },
 
@@ -98,36 +93,24 @@ export default {
         },
         
         async saveEdit() {
-            try {
-                await axios.patch(`http://localhost:3000/article/${this.articleId}/comment/${this.editingComment.id}`, {content: this.editText})
-                alert('Комментарий обновлён')
-                this.cancelEdit()
-                this.loadComments()
-            } 
-            catch (error) {
-                alert('Ошибка при сохранении')
-            }
+            await this.$store.dispatch('comments/updateComment', {
+                articleId: this.articleId,
+                comment: { id: this.editingComment.id, text: this.editText }
+            })
+            this.cancelEdit()
         }
 
         async addComment() {
-            if (this.newCommentText.trim()===''){
-                alert ('Напишите текст комментария')
+            if (this.newCommentText.trim() === '') {
+                alert('Напишите текст')
                 return
             }
 
-            const data = {
-                text: this.newCommentText.trim()
-            }
-
-            try{
-                await axios.post(`http://localhost:3000/article/${this.articleId}/comment/`, data)
-                alert ('Комментарий добавлен!')
-                this.newCommentText = ''
-                this.loadComments()
-            }
-            catch (error){
-                alert('Ошибка при добавлении комментария')
-            }
+            await this.$store.dispatch('comments/createComment', {
+                articleId: this.articleId,
+                commentData: { text: this.newCommentText.trim() }
+            })
+            this.newCommentText = ''
         }
     }
 }
