@@ -35,6 +35,17 @@ const actions = {
         }
     },
 
+    async loadSingleArticle({ commit }, id) {
+        try {
+            const response = await axios.get(`http://localhost:3000/article/${id}`)
+            return response.data
+        }
+        catch (error) {
+            console.log('Статья не найдена или ошибка загрузки:', error)
+            return null
+        }
+    },
+
     async createArticle({ commit }, articleData) {
         try {
             const response = await axios.post('http://localhost:3000/article/', articleData)
@@ -70,7 +81,7 @@ const actions = {
                     dateTo: to
                 }
             })
-            return response.data  // возвращаем данные, не кладём в state (это разовая аналитика)
+            return response.data
         } catch (error) {
             console.log('Ошибка аналитики')
             return []

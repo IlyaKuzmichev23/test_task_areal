@@ -19,7 +19,7 @@
             Сохранить
         </v-btn>
 
-        <v-btn class="mt-4 ml-4" @clicl="goToList">
+        <v-btn class="mt-4 ml-4" @click="goToList">
             Отмена
         </v-btn>
     </div>
@@ -64,6 +64,10 @@ export default {
             }
         },
 
+        goToList() {
+            this.$router.push('/articles')
+        },
+
         async save() {
             if (this.title === '' || this.content === '') {
                 alert('Заполните заголовок и текст')
@@ -91,9 +95,6 @@ export default {
             catch (error) {
                 alert('Ошибка при сохранении')
             }
-        },
-        goToList() {
-            this.$router.push('/articles')
         }
     }
 }

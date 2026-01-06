@@ -58,6 +58,7 @@ const actions = {
 
     async deleteComment({ commit }, { articleId, commentId }) {
         try {
+            console.log('Удаление началось')
             await axios.delete(`http://localhost:3000/article/${articleId}/comment/${commentId}`)
             commit('DELETE_COMMENT', commentId)
         } 

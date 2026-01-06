@@ -128,7 +128,7 @@ export default {
       this.newCommentText = ''
     },
 
-    async deleteComment(commentId) {
+    async deleteComment(id) {
       if (confirm('Удалить?')) {
         await this.$store.dispatch('comments/deleteComment', {
           articleId: this.articleId,
