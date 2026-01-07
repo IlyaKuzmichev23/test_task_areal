@@ -53,7 +53,8 @@ export default {
     methods: {
         async loadArticle() {
             try {
-                const response = await this.$store.dispatch('articles/loadArticle', this.articleId)
+                const response = await this.$store.dispatch('articles/loadSingleArticle', this.articleId)
+                console.log(response)
                 if (response) {
                     this.title = response.title
                     this.content = response.content

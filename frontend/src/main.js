@@ -7,12 +7,14 @@ import vuetify from './plugins/vuetify'
 
 import articles from './store/modules/articles'
 import comments from './store/modules/comments'
+import analytics from './store/modules/analytics'
 
 
 const store = createStore({
     modules: {
         articles,
-        comments
+        comments,
+        analytics
     }
 })
 

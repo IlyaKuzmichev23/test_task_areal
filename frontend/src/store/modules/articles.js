@@ -71,22 +71,7 @@ const actions = {
         } catch (error) {
             console.log('Не удалось удалить статью')
         }
-    },
-
-    async fetchAnalyticComments({ commit }, { from, to }) {
-        try {
-            const response = await axios.get('http://localhost:3000/analytic/comments', {
-                params: {
-                    dateFrom: from,
-                    dateTo: to
-                }
-            })
-            return response.data
-        } catch (error) {
-            console.log('Ошибка аналитики')
-            return []
-        }
-    },
+    } 
 }
 
 export default {

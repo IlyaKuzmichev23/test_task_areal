@@ -14,6 +14,10 @@
         Удалить статью
       </v-btn>
 
+      <v-btn color="green" class="mt-4 ml-2" @click="goToList">
+        Назад
+      </v-btn>
+
       <div class="mt-8">
         <h2>Комментарии</h2>
 
@@ -21,7 +25,7 @@
 
         <div v-for="comment in comments" :key="comment.id" class="mb-4 pa-4 border">
           <p><strong>Комментарий:</strong> {{ comment.text }}</p>
-          <p><small>Создан: {{ comment.createdAt }}</small></p>
+          <p><small>Создан: {{ formatDate(comment.createdAt) }}</small></p>
 
           <v-btn color="blue" small class="mr-2" @click="editComment(comment)">
             Редактировать
@@ -79,6 +83,21 @@ export default {
   },
 
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString)
+      const day = date.getDate()
+      const month = date.getMonth() + 1
+      const year = date.getFullYear()
+      const hours = date.getHours().toString().padStart(2, '0')
+      const minutes = date.getMinutes().toString().padStart(2, '0')
+    
+      return `${day}.${month.toString().padStart(2, '0')}.${year} ${hours}:${minutes}`
+    },
+
+    goToList() {
+      this.$router.push('/articles')
+    },
+
     async loadArticle() {
       const article = await this.$store.dispatch('articles/loadSingleArticle', this.articleId)
       this.article = article

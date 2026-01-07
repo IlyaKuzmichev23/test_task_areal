@@ -6,6 +6,10 @@
       Добавить новую статью
     </v-btn>
 
+    <v-btn color="success" class="mb-6 ml-2" @click="goToAnalytic">
+      Фильтр комментариев
+    </v-btn>
+
     <v-table>
       <thead>
         <tr>
@@ -17,7 +21,7 @@
       <tbody>
         <tr v-for="article in articles" :key="article.id">
           <td>{{ article.title }}</td>
-          <td>{{ article.createdAt }}</td>
+          <td>{{ formatDate(article.createdAt) }}</td>
           <td>
             <v-btn color="blue" small class="mr-2" @click="viewArticle(article.id)">
               Просмотр
@@ -52,6 +56,21 @@ export default {
   },
 
   methods: {
+
+    formatDate(dateString) {
+      const date = new Date(dateString)
+      const day = date.getDate()
+      const month = date.getMonth() + 1
+      const year = date.getFullYear()
+      const hours = date.getHours().toString().padStart(2, '0')
+      const minutes = date.getMinutes().toString().padStart(2, '0')
+    
+      return `${day}.${month.toString().padStart(2, '0')}.${year} ${hours}:${minutes}`
+    },
+
+    goToAnalytic() {
+      this.$router.push('/analytic')
+    },
 
     goToAdd() {
       this.$router.push('/article/add')
